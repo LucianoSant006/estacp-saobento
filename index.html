@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estação São Bento - Bar & Restaurante</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <script>
@@ -79,17 +76,26 @@
 
         /* Utility for gallery transitions */
         .gallery-slide {
-            transition: all 0.7s ease-in-out;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
         }
+        
+        /* Estado Ativo (Visível) */
         .gallery-active {
             opacity: 1;
             transform: scale(1);
             z-index: 10;
         }
+        
+        /* Estado Oculto (Invisível) */
         .gallery-hidden {
             opacity: 0;
-            transform: scale(1.1);
+            transform: scale(1.1); /* Leve zoom ao sair */
             z-index: 0;
+            pointer-events: none;
         }
 
         /* Mobile specific adjustments for train z-index */
@@ -103,23 +109,18 @@
         }
     </style>
 </head>
-<body class="bg-neutral-950 text-white font-sans min-h-screen selection:bg-amber-500
- selection:text-black overflow-x-hidden">
+<body class="bg-neutral-950 text-white font-sans min-h-screen selection:bg-amber-500 selection:text-black overflow-x-hidden">
 
-    <!-- --- TREM ANIMADO --- -->
     <div class="fixed bottom-0 left-0 w-full z-40 pointer-events-none overflow-hidden h-40 md:h-56 train-container">
         <div class="animate-train-move absolute bottom-0 flex items-end">
             
-            <!-- LOCOMOTIVA -->
             <div class="relative mr-1 z-10 filter drop-shadow-[0_0_20px_rgba(245,158,11,0.5)]">
-                <!-- Fumaça -->
                 <div class="absolute bottom-[70%] left-[10%] w-10 h-10 bg-gray-400/30 rounded-full animate-steam opacity-0 blur-xl"></div>
                 <div class="absolute bottom-[80%] left-[15%] w-12 h-12 bg-gray-400/20 rounded-full animate-steam opacity-0 blur-xl" style="animation-delay: 0.5s"></div>
                 
                 <img src="trem.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/325/325257.png'" alt="Locomotiva" class="w-56 md:w-72 h-auto object-contain" />
             </div>
             
-            <!-- VAGÃO 1 -->
             <div class="relative -ml-6 mb-3 z-0">
                 <div class="w-28 h-20 bg-neutral-900 border-2 border-amber-600 rounded-lg flex items-center justify-center relative shadow-lg">
                     <div class="absolute -bottom-2 left-2 w-6 h-6 bg-black rounded-full border border-gray-600 animate-spin-slow"></div>
@@ -132,7 +133,6 @@
                 <div class="w-6 h-2 bg-gray-600 absolute bottom-4 -left-3"></div>
             </div>
 
-            <!-- VAGÃO 2 -->
             <div class="relative ml-2 mb-3">
                 <div class="w-28 h-20 bg-neutral-900 border-2 border-amber-600 rounded-lg flex items-center justify-center relative shadow-lg">
                     <div class="absolute -bottom-2 left-2 w-6 h-6 bg-black rounded-full border border-gray-600 animate-spin-slow"></div>
@@ -145,7 +145,6 @@
                 <div class="w-6 h-2 bg-gray-600 absolute bottom-4 -left-3"></div>
             </div>
 
-            <!-- VAGÃO 3 -->
             <div class="relative ml-2 mb-3">
                 <div class="w-28 h-20 bg-neutral-900 border-2 border-amber-600 rounded-lg flex items-center justify-center relative shadow-lg">
                     <div class="absolute -bottom-2 left-2 w-6 h-6 bg-black rounded-full border border-gray-600 animate-spin-slow"></div>
@@ -160,11 +159,9 @@
         </div>
     </div>
 
-    <!-- --- NAVBAR --- -->
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center gap-3 group cursor-pointer">
                     <div class="relative w-12 h-12 rounded-full border-2 border-amber-500 flex items-center justify-center bg-black group-hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] transition-all duration-300">
                        <img src="logoestação.png" alt="" srcset="">
@@ -175,7 +172,6 @@
                     </div>
                 </div>
 
-                <!-- Desktop Menu -->
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-6">
                         <a href="#home" class="hover:text-amber-400 px-3 py-2 rounded-md text-xs font-bold uppercase tracking-widest transition-colors duration-200">Home</a>
@@ -191,7 +187,6 @@
                     </div>
                 </div>
 
-                <!-- Mobile Button -->
                 <div class="md:hidden">
                     <button id="mobile-menu-btn" class="text-amber-500 hover:text-white p-2">
                         <i data-lucide="menu" class="w-7 h-7"></i>
@@ -200,7 +195,6 @@
             </div>
         </div>
         
-        <!-- Mobile Menu (Hidden by default) -->
         <div id="mobile-menu" class="hidden md:hidden bg-neutral-900 border-b border-amber-500/30">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#home" class="text-gray-300 hover:text-amber-500 block px-3 py-4 rounded-md text-base font-bold uppercase text-center border-b border-gray-800 mobile-link">Home</a>
@@ -213,7 +207,6 @@
         </div>
     </nav>
 
-    <!-- --- HERO SECTION --- -->
     <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 z-0">
             <img src="logoestação.png" alt="Bar Background" class="w-full h-full object-cover" />
@@ -245,7 +238,6 @@
         </div>
     </section>
 
-    <!-- --- INFO STRIP --- -->
     <div class="relative z-20 -mt-20 max-w-6xl mx-auto px-4">
         <div class="bg-neutral-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="flex flex-col items-center text-center group">
@@ -272,7 +264,6 @@
         </div>
     </div>
 
-    <!-- --- A CASA --- -->
     <section id="a-casa" class="py-24 bg-neutral-950">
         <div class="max-w-7xl mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -315,14 +306,13 @@
                         </li>
                     </ul>
                     <button class="text-amber-500 border-b border-amber-500 pb-1 hover:text-white hover:border-white transition-colors">
-                        CONHEÇA NOSSA ESTRUTURA &rarr;
+                        CONHEÇA NOSSA ESTRUTURA →
                     </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- --- AGENDA SECTION --- -->
     <section id="agenda" class="py-24 bg-neutral-900">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
@@ -332,7 +322,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- SEXTA -->
                 <div class="group relative rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-2 shadow-xl">
                     <div class="h-64 overflow-hidden relative">
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
@@ -357,7 +346,6 @@
                     </div>
                 </div>
 
-                <!-- SÁBADO -->
                 <div class="group relative rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-2 shadow-xl">
                     <div class="h-64 overflow-hidden relative">
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
@@ -382,7 +370,6 @@
                     </div>
                 </div>
 
-                <!-- DOMINGO -->
                 <div class="group relative rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-2 shadow-xl">
                     <div class="h-64 overflow-hidden relative">
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
@@ -410,7 +397,6 @@
         </div>
     </section>
 
-    <!-- --- CARDÁPIO SECTION --- -->
     <section id="cardapio" class="py-20 bg-neutral-950 relative">
         <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent"></div>
         <div class="max-w-6xl mx-auto px-4">
@@ -437,15 +423,13 @@
             </div>
 
             <div id="menu-items-container" class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 bg-neutral-900/50 p-8 rounded-3xl border border-white/5">
-                <!-- Items injected via JS -->
-            </div>
+                </div>
             <div class="text-center mt-8 text-gray-600 text-xs italic">
                 * Se beber, não dirija. Preços sujeitos a alteração sem aviso prévio. Cobramos taxa de serviço (opcional).
             </div>
         </div>
     </section>
 
-    <!-- --- GALERIA INTERATIVA --- -->
     <section id="galeria" class="py-24 bg-black overflow-hidden relative">
         <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
         <div class="max-w-7xl mx-auto px-4 relative z-10">
@@ -464,9 +448,8 @@
                 </div>
             </div>
 
-            <div id="gallery-container" class="relative h-[400px] md:h-[600px] w-full rounded-3xl overflow-hidden shadow-2xl border border-neutral-800 group">
-                <!-- Slides injected via JS -->
-            </div>
+            <div id="gallery-container" class="relative h-[400px] md:h-[600px] w-full rounded-3xl overflow-hidden shadow-2xl border border-neutral-800 group cursor-pointer">
+                </div>
             
             <div class="flex justify-center mt-12">
                 <a href="https://instagram.com" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-amber-500 transition-colors border-b border-transparent hover:border-amber-500 pb-1">
@@ -476,7 +459,6 @@
         </div>
     </section>
 
-    <!-- --- VIP & NIVER SECTION --- -->
     <section id="vip-niver" class="py-24 bg-gradient-to-b from-neutral-900 to-neutral-950 mb-mobile-footer">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
@@ -486,7 +468,6 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                 
-                <!-- BIRTHDAY CALCULATOR -->
                 <div class="bg-neutral-800/40 backdrop-blur border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 bg-amber-500 text-black font-bold text-xs px-8 py-1 transform rotate-45 translate-x-8 translate-y-4 shadow-md">POPULAR</div>
                     
@@ -518,15 +499,16 @@
                     </div>
 
                     <div id="perks-container" class="space-y-3 mb-8 bg-neutral-900/50 p-6 rounded-xl border border-white/5">
-                        <!-- Perks injected via JS -->
-                    </div>
+                        </div>
 
                     <button onclick="sendBirthday()" class="w-full py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-green-500/20">
-                        <i data-lucide="instagram" class="w-5 h-5"></i> RESERVAR PELO WHATSAPP
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                        RESERVAR PELO WHATSAPP
                     </button>
                 </div>
 
-                <!-- VIP LIST MAKER -->
                 <div class="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 md:p-10 shadow-2xl relative">
                     <div class="text-center mb-8">
                         <div class="w-16 h-16 bg-neutral-800 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white shadow-inner">
@@ -560,7 +542,6 @@
                     </div>
 
                     <div id="vip-list-container" class="bg-neutral-950 rounded-xl p-4 h-48 overflow-y-auto mb-6 border border-neutral-800 custom-scrollbar">
-                        <!-- List injected via JS -->
                         <div class="h-full flex flex-col items-center justify-center text-gray-600 italic">
                             <i data-lucide="info" class="mb-2 opacity-50 w-6 h-6"></i>
                             Lista vazia...
@@ -572,7 +553,10 @@
                     </div>
 
                     <button onclick="sendVipList()" class="w-full py-4 bg-transparent border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-all">
-                        <i data-lucide="send" class="w-5 h-5"></i> ENVIAR LISTA AGORA
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                        ENVIAR LISTA AGORA
                     </button>
                 </div>
 
@@ -580,7 +564,6 @@
         </div>
     </section>
 
-    <!-- --- FOOTER --- -->
     <footer id="contato" class="bg-black border-t border-neutral-800 pt-16 pb-8 mb-20 md:mb-0">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             <div>
@@ -641,12 +624,12 @@
         </div>
     </footer>
 
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/5519999999999" target="_blank" class="fixed bottom-36 md:bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform z-50 animate-bounce-slow">
-        <i data-lucide="phone" class="w-7 h-7 fill-current"></i>
+    <a href="https://wa.me/5519999999999" target="_blank" class="fixed bottom-36 md:bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform z-50 animate-bounce-slow flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
     </a>
 
-    <!-- --- JAVASCRIPT --- -->
     <script>
         // --- DADOS ---
         const menuData = {
@@ -704,7 +687,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             renderMenu('combos');
-            renderGallery();
+            initGallery(); // Inicializa o carrossel
             renderPerks();
         });
 
@@ -774,18 +757,22 @@
             });
         }
 
-        // --- GALLERY LOGIC ---
+        // --- CAROUSEL LOGIC (JS CAROUSEL) ---
         let currentSlide = 0;
+        let slideInterval;
         const galleryContainer = document.getElementById('gallery-container');
         const prevBtn = document.getElementById('prev-slide');
         const nextBtn = document.getElementById('next-slide');
 
-        function renderGallery() {
+        // Cria os slides uma única vez (não apaga o HTML repetidamente)
+        function initGallery() {
             galleryContainer.innerHTML = '';
             galleryImages.forEach((img, index) => {
                 const div = document.createElement('div');
-                const isCurrent = index === currentSlide;
-                div.className = `absolute inset-0 gallery-slide ${isCurrent ? 'gallery-active' : 'gallery-hidden'}`;
+                // Adiciona todas as imagens, mas usa classes para controlar visibilidade
+                div.className = `gallery-slide ${index === 0 ? 'gallery-active' : 'gallery-hidden'}`;
+                div.setAttribute('data-index', index);
+                
                 div.innerHTML = `
                     <img src="${img}" alt="Galeria ${index}" class="w-full h-full object-cover" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -798,17 +785,60 @@
                 galleryContainer.appendChild(div);
             });
             lucide.createIcons();
+            startAutoplay(); // Inicia o carrossel automático
         }
 
-        prevBtn.addEventListener('click', () => {
+        // Atualiza apenas as classes CSS
+        function updateGallery() {
+            const slides = document.querySelectorAll('.gallery-slide');
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.remove('gallery-hidden');
+                    slide.classList.add('gallery-active');
+                } else {
+                    slide.classList.remove('gallery-active');
+                    slide.classList.add('gallery-hidden');
+                }
+            });
+        }
+
+        // Funções de controle
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % galleryImages.length;
+            updateGallery();
+        }
+
+        function prevSlide() {
             currentSlide = (currentSlide - 1 + galleryImages.length) % galleryImages.length;
-            renderGallery();
+            updateGallery();
+        }
+
+        // Autoplay Logic
+        function startAutoplay() {
+            slideInterval = setInterval(nextSlide, 4000); // Muda a cada 4 segundos
+        }
+
+        function stopAutoplay() {
+            clearInterval(slideInterval);
+        }
+
+        // Event Listeners
+        nextBtn.addEventListener('click', () => {
+            stopAutoplay();
+            nextSlide();
+            startAutoplay();
         });
 
-        nextBtn.addEventListener('click', () => {
-            currentSlide = (currentSlide + 1) % galleryImages.length;
-            renderGallery();
+        prevBtn.addEventListener('click', () => {
+            stopAutoplay();
+            prevSlide();
+            startAutoplay();
         });
+
+        // Pausar no Hover
+        galleryContainer.addEventListener('mouseenter', stopAutoplay);
+        galleryContainer.addEventListener('mouseleave', startAutoplay);
+
 
         // --- VIP & NIVER LOGIC ---
         const guestSlider = document.getElementById('guest-slider');
