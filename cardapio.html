@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio | Estação São Bento</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo"><i class="fas fa-train"></i> ESTAÇÃO SÃO BENTO</div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="cardapio.html" class="active">Cardápio</a></li>
+                    <li><a href="eventos.html">Agenda</a></li>
+                    <li><a href="galeria.html">Fotos</a></li>
+                    <li><a href="reservas.html" class="btn-reserve">Reservas</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>CARDÁPIO DIGITAL</h1>
+            <p>Selecione sua categoria ou use nosso Sommelier Virtual.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sommelier-box">
+            <h3><i class="fas fa-robot"></i> SOMMELIER DE VIBE</h3>
+            <p>Não sabe o que beber? Escolha como você está se sentindo hoje:</p>
+            <div class="vibe-buttons">
+                <button onclick="suggestDrink('esquenta')">🔥 Tô no Esquenta</button>
+                <button onclick="suggestDrink('paquera')">😏 Modo Paquera</button>
+                <button onclick="suggestDrink('sofrencia')">💔 Sofrência (Sertanejo)</button>
+                <button onclick="suggestDrink('ostentacao')">👑 Hoje eu sou Rei</button>
+            </div>
+            <div id="suggestion-result"></div>
+        </div>
+
+        <div class="menu-controls">
+            <button class="menu-tab" onclick="loadMenu('combos')">Combos</button>
+            <button class="menu-tab" onclick="loadMenu('cervejas')">Cervejas</button>
+            <button class="menu-tab" onclick="loadMenu('drinks')">Drinks</button>
+        </div>
+
+        <div id="menu-list" class="menu-grid">
+            </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <button onclick="window.print()" class="btn-reserve" style="background:transparent; border:1px solid #fff; color:#fff">
+                <i class="fas fa-print"></i> Imprimir Cardápio
+            </button>
+        </div>
+    </div>
+
+    <footer><p>© 2025 Estação São Bento.</p></footer>
+    <script src="script.js"></script>
+    <script>loadMenu('combos'); // Carrega inicial</script>
+</body>
+</html>
