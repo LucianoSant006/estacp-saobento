@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estação São Bento - Bar & Restaurante</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'spin-slow': 'spin 2s linear infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'train-move': 'trainMove 25s linear infinite',
+                        'steam': 'steam 2.5s infinite ease-out'
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        trainMove: {
+                            '0%': { transform: 'translateX(-100vw)' },
+                            '40%': { transform: 'translateX(110vw)' },
+                            '100%': { transform: 'translateX(110vw)' }
+                        },
+                        steam: {
+                            '0%': { transform: 'translateY(0) scale(1) translateX(0)', opacity: '0.6' },
+                            '100%': { transform: 'translateY(-60px) scale(3) translateX(-20px)', opacity: '0' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #171717;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Utility for gallery transitions */
+        .gallery-slide {
+            transition: all 0.7s ease-in-out;
+        }
+        .gallery-active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 10;
+        }
+        .gallery-hidden {
+            opacity: 0;
+            transform: scale(1.1);
+            z-index: 0;
+        }
+
+        /* Mobile specific adjustments for train z-index */
+        @media (max-width: 768px) {
+            .train-container {
+                pointer-events: none;
+            }
+            .mb-mobile-footer {
+                margin-bottom: 5rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral-950 text-white font-sans min-h-screen selection:bg-amber-500
+ selection:text-black overflow-x-hidden">
+
+    <!-- --- TREM ANIMADO --- -->
+    <div class="fixed bottom-0 left-0 w-full z-40 pointer-events-none overflow-hidden h-40 md:h-56 train-container">
+        <div class="animate-train-move absolute bottom-0 flex items-end">
+            
+            <!-- LOCOMOTIVA -->
+            <div class="relative mr-1 z-10 filter drop-shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+                <!-- Fumaça -->
+                <div class="absolute bottom-[70%] left-[10%] w-10 h-10 bg-gray-400/30 rounded-full animate-steam opacity-0 blur-xl"></div>
+                <div class="absolute bottom-[80%] left-[15%] w-12 h-12 bg-gray-400/20 rounded-full animate-steam opacity-0 blur-xl" style="animation-delay: 0.5s"></div>
+                
+                <img src="trem.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/325/325257.png'" alt="Locomotiva" class="w-56 md:w-72 h-auto object-contain" />
+            </div>
+            
+            <!-- VAGÃO 1 -->
+            <div class="relative -ml-6 mb-3 z-0">
+                <div class="w-28 h-20 bg-neutral-900 border-2 border-amber-600 rounded-lg flex items-center justify-center relative shadow-lg">
+                    <div class="absolute -bottom-2 left-2 w-6 h-6 bg-black rounded-full border border-gray-600 animate-spin-slow"></div>
+                    <div class="absolute -bottom-2 right-2 w-6 h-6 bg-black rounded-full border border-gray-600 animate-spin-slow"></div>
+                    <div class="absolute -top-6 animate-bounce">
+                        <i data-lucide="beer" class="w-9 h-9 text-yellow-400 fill-yellow-400/20"></i>
+                    </div>
+                    <span class="mt-4 text-[10px] text-amber-500 font-bold tracking-wider">CHOPP</span>
+                </div>
+                <div class="w-6 h-2 bg-gray-600 absolute bottom-4 -left-3"></div>
+            </div>
+
+            <!-- VAGÃO 2 -->
+            <div class="relative ml-2 mb-3">
+                <div class="w-28 h-20 bg-neutral-900 border-2 border-amber-600 rounded-lg flex items-center justify-center relative shadow-lg">
+                    <div class="absolute -bottom-2 left-2 w-6 h-6 bg-black rounded-full border border-gray-600 animate-spin-slow"></div>
+                    <div class="absolute -bottom-2 right-2 w-6 h-6 bg-black rounded-full border border-gray-600 animate-spin-slow"></div>
+                    <div class="absolute -top-6 animate-bounce" style="animation-delay: 0.2s">
+                        <i data-lucide="wine" class="w-9 h-9 text-red-500 fill-red-500/20"></i>
+                    </div>
+                    <span class="mt-4 text-[10px] text-amber-500 font-bold tracking-wider">DRINKS</span>
+                </div>
+                <div class="w-6 h-2 bg-gray-600 absolute bottom-4 -left-3"></div>
+            </div>
+
+            <!-- VAGÃO 3 -->
+            <div class="relative ml-2 mb-3">
+                <div class="w-28 h-20 bg-neutral-900 border-2 border-amber-600 rounded-lg flex items-center justify-center relative shadow-lg">
+                    <div class="absolute -bottom-2 left-2 w-6 h-6 bg-black rounded-full border border-gray-600 animate-spin-slow"></div>
+                    <div class="absolute -bottom-2 right-2 w-6 h-6 bg-black rounded-full border border-gray-600 animate-spin-slow"></div>
+                    <div class="absolute -top-6 animate-bounce" style="animation-delay: 0.4s">
+                        <i data-lucide="utensils" class="w-9 h-9 text-gray-200 fill-gray-200/20"></i>
+                    </div>
+                    <span class="mt-4 text-[10px] text-amber-500 font-bold tracking-wider">PETISCOS</span>
+                </div>
+                <div class="w-6 h-2 bg-gray-600 absolute bottom-4 -left-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- NAVBAR --- -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 group cursor-pointer">
+                    <div class="relative w-12 h-12 rounded-full border-2 border-amber-500 flex items-center justify-center bg-black group-hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] transition-all duration-300">
+                       <img src="logoestação.png" alt="" srcset="">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-white font-bold text-lg tracking-widest leading-none font-serif">ESTAÇÃO</span>
+                        <span class="text-amber-500 font-bold text-sm tracking-widest leading-none">SÃO BENTO</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-6">
+                        <a href="#home" class="hover:text-amber-400 px-3 py-2 rounded-md text-xs font-bold uppercase tracking-widest transition-colors duration-200">Home</a>
+                        <a href="#a-casa" class="hover:text-amber-400 px-3 py-2 rounded-md text-xs font-bold uppercase tracking-widest transition-colors duration-200">A Casa</a>
+                        <a href="#agenda" class="hover:text-amber-400 px-3 py-2 rounded-md text-xs font-bold uppercase tracking-widest transition-colors duration-200">Agenda</a>
+                        <a href="#cardapio" class="hover:text-amber-400 px-3 py-2 rounded-md text-xs font-bold uppercase tracking-widest transition-colors duration-200">Cardápio</a>
+                        <a href="#galeria" class="hover:text-amber-400 px-3 py-2 rounded-md text-xs font-bold uppercase tracking-widest transition-colors duration-200">Galeria</a>
+                        <a href="#vip-niver" class="hover:text-amber-400 px-3 py-2 rounded-md text-xs font-bold uppercase tracking-widest transition-colors duration-200">VIP & Niver</a>
+                        
+                        <button onclick="window.location.href='#vip-niver'" class="bg-amber-500 hover:bg-amber-600 text-black px-6 py-2 rounded-full font-bold text-sm transition-transform hover:-translate-y-1 shadow-lg shadow-amber-500/20">
+                            RESERVAS
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-amber-500 hover:text-white p-2">
+                        <i data-lucide="menu" class="w-7 h-7"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-neutral-900 border-b border-amber-500/30">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="text-gray-300 hover:text-amber-500 block px-3 py-4 rounded-md text-base font-bold uppercase text-center border-b border-gray-800 mobile-link">Home</a>
+                <a href="#a-casa" class="text-gray-300 hover:text-amber-500 block px-3 py-4 rounded-md text-base font-bold uppercase text-center border-b border-gray-800 mobile-link">A Casa</a>
+                <a href="#agenda" class="text-gray-300 hover:text-amber-500 block px-3 py-4 rounded-md text-base font-bold uppercase text-center border-b border-gray-800 mobile-link">Agenda</a>
+                <a href="#cardapio" class="text-gray-300 hover:text-amber-500 block px-3 py-4 rounded-md text-base font-bold uppercase text-center border-b border-gray-800 mobile-link">Cardápio</a>
+                <a href="#galeria" class="text-gray-300 hover:text-amber-500 block px-3 py-4 rounded-md text-base font-bold uppercase text-center border-b border-gray-800 mobile-link">Galeria</a>
+                <a href="#vip-niver" class="text-gray-300 hover:text-amber-500 block px-3 py-4 rounded-md text-base font-bold uppercase text-center border-b border-gray-800 mobile-link">VIP & Niver</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- --- HERO SECTION --- -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="logoestação.png" alt="Bar Background" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-transparent"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-16">
+            <div class="flex items-center justify-center gap-2 mb-4 animate-fade-in-up">
+                <div class="h-px w-10 bg-amber-500"></div>
+                <h2 class="text-amber-500 font-bold tracking-[0.3em] text-sm md:text-lg">DESDE 2006</h2>
+                <div class="h-px w-10 bg-amber-500"></div>
+            </div>
+            <h1 class="text-5xl md:text-8xl font-bold text-white font-serif mb-6 leading-tight drop-shadow-2xl">
+                ESTAÇÃO <br />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-amber-600">SÃO BENTO</span>
+            </h1>
+            <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light">
+                O coração do Taquaral pulsa aqui. Música ao vivo, gastronomia de boteco premium e os melhores drinks da cidade.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#agenda" class="px-8 py-4 bg-transparent border-2 border-amber-500 text-amber-500 font-bold rounded-full hover:bg-amber-500 hover:text-black transition-all duration-300">
+                    VER AGENDA
+                </a>
+                <a href="#vip-niver" class="px-8 py-4 bg-amber-500 text-black font-bold rounded-full hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(245,158,11,0.4)]">
+                    LISTA VIP
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- INFO STRIP --- -->
+    <div class="relative z-20 -mt-20 max-w-6xl mx-auto px-4">
+        <div class="bg-neutral-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="flex flex-col items-center text-center group">
+                <div class="w-12 h-12 rounded-full bg-neutral-800 flex items-center justify-center text-amber-500 mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="clock" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-white font-bold text-lg mb-2">Horários</h3>
+                <p class="text-gray-400 text-sm">Qui-Sex: 18h30 - 03h<br/>Sáb: 20h - 03h30<br/>Dom: 16h - 01h</p>
+            </div>
+            <div class="flex flex-col items-center text-center group border-t md:border-t-0 md:border-l md:border-r border-white/10 pt-6 md:pt-0">
+                <div class="w-12 h-12 rounded-full bg-neutral-800 flex items-center justify-center text-amber-500 mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="map-pin" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-white font-bold text-lg mb-2">Localização</h3>
+                <p class="text-gray-400 text-sm">Rua do Taquaral, 1234<br/>Campinas - SP</p>
+            </div>
+            <div class="flex flex-col items-center text-center group pt-6 md:pt-0">
+                <div class="w-12 h-12 rounded-full bg-neutral-800 flex items-center justify-center text-amber-500 mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="music" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-white font-bold text-lg mb-2">Estilo</h3>
+                <p class="text-gray-400 text-sm">Sertanejo, Pagode & Funk<br/>Música ao vivo e DJs</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- A CASA --- -->
+    <section id="a-casa" class="py-24 bg-neutral-950">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div class="relative">
+                    <div class="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-amber-500 rounded-tl-3xl"></div>
+                    <img src="https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?q=80&w=1000" alt="Interior da Casa" class="rounded-2xl shadow-2xl w-full h-[500px] object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+                    <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-amber-500 rounded-br-3xl"></div>
+                    <div class="absolute bottom-8 right-8 bg-neutral-900/90 backdrop-blur p-4 rounded-xl border-l-4 border-amber-500 shadow-xl max-w-xs">
+                        <p class="text-amber-500 font-bold text-xl">18 ANOS</p>
+                        <p class="text-gray-300 text-sm">De história fazendo as melhores noites de Campinas.</p>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-amber-500 font-bold tracking-widest text-sm mb-2">SOBRE NÓS</h2>
+                    <h3 class="text-4xl md:text-5xl font-serif font-bold text-white mb-6">MAIS QUE UMA BALADA, <br/>UMA EXPERIÊNCIA.</h3>
+                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                        Localizada no coração do Taquaral, a <span class="text-amber-500 font-bold">Estação São Bento</span> nasceu em 2006 com a missão de trazer o melhor do entretenimento para Campinas. Com uma arquitetura rústica que remete às antigas estações ferroviárias, unimos o charme do passado com a energia da noite moderna.
+                    </p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-4">
+                            <div class="bg-neutral-800 p-2 rounded text-amber-500"><i data-lucide="party-popper" class="w-5 h-5"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white">Eventos Corporativos</h4>
+                                <p class="text-sm text-gray-500">Espaço exclusivo para festas de fim de ano e confraternizações.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="bg-neutral-800 p-2 rounded text-amber-500"><i data-lucide="flame" class="w-5 h-5"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white">Gastronomia de Boteco</h4>
+                                <p class="text-sm text-gray-500">Porções generosas e lanches premiados para acompanhar seu chopp.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="bg-neutral-800 p-2 rounded text-amber-500"><i data-lucide="music" class="w-5 h-5"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white">Palco 360º</h4>
+                                <p class="text-sm text-gray-500">Visão perfeita dos shows de qualquer lugar da casa.</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <button class="text-amber-500 border-b border-amber-500 pb-1 hover:text-white hover:border-white transition-colors">
+                        CONHEÇA NOSSA ESTRUTURA &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- AGENDA SECTION --- -->
+    <section id="agenda" class="py-24 bg-neutral-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-amber-500 font-bold tracking-widest text-sm mb-2">PROGRAMAÇÃO</h2>
+                <h3 class="text-4xl md:text-5xl font-serif font-bold text-white">AGENDA DA SEMANA</h3>
+                <div class="w-24 h-1 bg-amber-500 mx-auto mt-6 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- SEXTA -->
+                <div class="group relative rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-2 shadow-xl">
+                    <div class="h-64 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7" alt="Noite do Sertanejo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <div class="absolute top-4 right-4 z-20 bg-amber-500 text-black font-bold px-3 py-1 rounded text-xs shadow-lg flex items-center gap-1">
+                            <i data-lucide="calendar" class="w-3 h-3"></i> SEXTA • 20H
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-2xl font-bold text-white mb-2 font-serif">Noite do Sertanejo</h4>
+                        <p class="text-gray-400 mb-6">Dupla João & Maria + DJ Residente</p>
+                        <div class="bg-neutral-900 rounded-lg p-4 border border-dashed border-amber-500/30 flex items-center gap-3">
+                            <div class="bg-amber-500/20 p-2 rounded-full text-amber-500"><i data-lucide="star" class="w-4 h-4"></i></div>
+                            <div>
+                                <p class="text-amber-500 text-xs font-bold uppercase">Promoção do Dia</p>
+                                <p class="text-gray-300 text-sm font-semibold">Combo Vodka: R$ 199 até 22h</p>
+                            </div>
+                        </div>
+                        <button class="w-full mt-6 py-3 bg-neutral-800 hover:bg-neutral-700 text-white font-bold rounded-lg transition-colors border border-neutral-700 hover:border-gray-500">
+                            GARANTIR INGRESSO
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SÁBADO -->
+                <div class="group relative rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-2 shadow-xl">
+                    <div class="h-64 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1545128485-c400e7702796" alt="Baile da Estação" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <div class="absolute top-4 right-4 z-20 bg-amber-500 text-black font-bold px-3 py-1 rounded text-xs shadow-lg flex items-center gap-1">
+                            <i data-lucide="calendar" class="w-3 h-3"></i> SÁBADO • 21H
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-2xl font-bold text-white mb-2 font-serif">Baile da Estação</h4>
+                        <p class="text-gray-400 mb-6">Grupo Batucada + Funk 150BPM</p>
+                        <div class="bg-neutral-900 rounded-lg p-4 border border-dashed border-amber-500/30 flex items-center gap-3">
+                            <div class="bg-amber-500/20 p-2 rounded-full text-amber-500"><i data-lucide="star" class="w-4 h-4"></i></div>
+                            <div>
+                                <p class="text-amber-500 text-xs font-bold uppercase">Promoção do Dia</p>
+                                <p class="text-gray-300 text-sm font-semibold">Mulher VIP até 23h na lista</p>
+                            </div>
+                        </div>
+                        <button class="w-full mt-6 py-3 bg-neutral-800 hover:bg-neutral-700 text-white font-bold rounded-lg transition-colors border border-neutral-700 hover:border-gray-500">
+                            GARANTIR INGRESSO
+                        </button>
+                    </div>
+                </div>
+
+                <!-- DOMINGO -->
+                <div class="group relative rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-2 shadow-xl">
+                    <div class="h-64 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1501612780327-45045538702b" alt="Pagode de Domingo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <div class="absolute top-4 right-4 z-20 bg-amber-500 text-black font-bold px-3 py-1 rounded text-xs shadow-lg flex items-center gap-1">
+                            <i data-lucide="calendar" class="w-3 h-3"></i> DOMINGO • 16H
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-2xl font-bold text-white mb-2 font-serif">Pagode de Domingo</h4>
+                        <p class="text-gray-400 mb-6">Grupo Ousadia + Convidados</p>
+                        <div class="bg-neutral-900 rounded-lg p-4 border border-dashed border-amber-500/30 flex items-center gap-3">
+                            <div class="bg-amber-500/20 p-2 rounded-full text-amber-500"><i data-lucide="star" class="w-4 h-4"></i></div>
+                            <div>
+                                <p class="text-amber-500 text-xs font-bold uppercase">Promoção do Dia</p>
+                                <p class="text-gray-300 text-sm font-semibold">Double Chopp até 18h</p>
+                            </div>
+                        </div>
+                        <button class="w-full mt-6 py-3 bg-neutral-800 hover:bg-neutral-700 text-white font-bold rounded-lg transition-colors border border-neutral-700 hover:border-gray-500">
+                            GARANTIR INGRESSO
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- CARDÁPIO SECTION --- -->
+    <section id="cardapio" class="py-20 bg-neutral-950 relative">
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent"></div>
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-serif font-bold text-white mb-4">CARDÁPIO COMPLETO</h2>
+                <p class="text-gray-400">Do petisco de boteco aos combos premium.</p>
+                <div class="flex flex-wrap justify-center gap-3 mt-8" id="menu-categories">
+                    <button class="menu-btn bg-amber-500 text-black shadow-lg shadow-amber-500/20 scale-105 px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 flex items-center gap-2" data-category="combos">
+                        <i data-lucide="wine" class="w-4 h-4"></i> Combos
+                    </button>
+                    <button class="menu-btn bg-neutral-900 border border-neutral-800 text-gray-400 hover:border-amber-500 hover:text-amber-500 px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 flex items-center gap-2" data-category="drinks">
+                        <i data-lucide="wine" class="w-4 h-4"></i> Drinks & Cocktails
+                    </button>
+                    <button class="menu-btn bg-neutral-900 border border-neutral-800 text-gray-400 hover:border-amber-500 hover:text-amber-500 px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 flex items-center gap-2" data-category="bebidas">
+                        <i data-lucide="beer" class="w-4 h-4"></i> Cervejas & Bebidas
+                    </button>
+                    <button class="menu-btn bg-neutral-900 border border-neutral-800 text-gray-400 hover:border-amber-500 hover:text-amber-500 px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 flex items-center gap-2" data-category="porcoes">
+                        <i data-lucide="utensils" class="w-4 h-4"></i> Porções
+                    </button>
+                    <button class="menu-btn bg-neutral-900 border border-neutral-800 text-gray-400 hover:border-amber-500 hover:text-amber-500 px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 flex items-center gap-2" data-category="lanches">
+                        <i data-lucide="utensils" class="w-4 h-4"></i> Lanches
+                    </button>
+                </div>
+            </div>
+
+            <div id="menu-items-container" class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 bg-neutral-900/50 p-8 rounded-3xl border border-white/5">
+                <!-- Items injected via JS -->
+            </div>
+            <div class="text-center mt-8 text-gray-600 text-xs italic">
+                * Se beber, não dirija. Preços sujeitos a alteração sem aviso prévio. Cobramos taxa de serviço (opcional).
+            </div>
+        </div>
+    </section>
+
+    <!-- --- GALERIA INTERATIVA --- -->
+    <section id="galeria" class="py-24 bg-black overflow-hidden relative">
+        <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-amber-500 font-bold tracking-widest text-sm mb-2">GALERIA</h2>
+                    <h3 class="text-4xl md:text-5xl font-serif font-bold text-white">VIBE DA GALERA</h3>
+                </div>
+                <div class="flex gap-2 mt-4 md:mt-0">
+                    <button id="prev-slide" class="w-12 h-12 rounded-full border border-gray-700 hover:border-amber-500 hover:bg-amber-500 hover:text-black flex items-center justify-center transition-all">
+                        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                    </button>
+                    <button id="next-slide" class="w-12 h-12 rounded-full border border-gray-700 hover:border-amber-500 hover:bg-amber-500 hover:text-black flex items-center justify-center transition-all">
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="gallery-container" class="relative h-[400px] md:h-[600px] w-full rounded-3xl overflow-hidden shadow-2xl border border-neutral-800 group">
+                <!-- Slides injected via JS -->
+            </div>
+            
+            <div class="flex justify-center mt-12">
+                <a href="https://instagram.com" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-amber-500 transition-colors border-b border-transparent hover:border-amber-500 pb-1">
+                    <i data-lucide="instagram" class="w-5 h-5"></i> Veja todas as fotos no Instagram @estacaosaobento
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- VIP & NIVER SECTION --- -->
+    <section id="vip-niver" class="py-24 bg-gradient-to-b from-neutral-900 to-neutral-950 mb-mobile-footer">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl md:text-5xl font-serif font-bold text-white">PLANEJE SUA NOITE</h3>
+                <p class="text-gray-400 mt-4">Simule seu aniversário ou envie sua lista VIP em segundos.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                
+                <!-- BIRTHDAY CALCULATOR -->
+                <div class="bg-neutral-800/40 backdrop-blur border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-amber-500 text-black font-bold text-xs px-8 py-1 transform rotate-45 translate-x-8 translate-y-4 shadow-md">POPULAR</div>
+                    
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 bg-neutral-900 rounded-2xl flex items-center justify-center mx-auto mb-4 text-amber-500 shadow-inner">
+                            <i data-lucide="wine" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Calculadora de Aniversário</h3>
+                        <p class="text-sm text-gray-400 mt-2">Veja o que você ganha trazendo a galera!</p>
+                    </div>
+
+                    <div class="mb-8">
+                        <div class="flex justify-between items-end mb-4">
+                            <span class="text-gray-400">Convidados</span>
+                            <span id="guest-count-display" class="text-5xl font-bold text-amber-500 font-serif">15</span>
+                        </div>
+                        <input 
+                            type="range" 
+                            id="guest-slider"
+                            min="0" 
+                            max="50" 
+                            value="15" 
+                            class="w-full h-3 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-amber-500 hover:accent-amber-400 transition-all"
+                        />
+                        <div class="flex justify-between text-xs text-gray-500 mt-2 font-mono">
+                            <span>0</span>
+                            <span>50+</span>
+                        </div>
+                    </div>
+
+                    <div id="perks-container" class="space-y-3 mb-8 bg-neutral-900/50 p-6 rounded-xl border border-white/5">
+                        <!-- Perks injected via JS -->
+                    </div>
+
+                    <button onclick="sendBirthday()" class="w-full py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-green-500/20">
+                        <i data-lucide="instagram" class="w-5 h-5"></i> RESERVAR PELO WHATSAPP
+                    </button>
+                </div>
+
+                <!-- VIP LIST MAKER -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 md:p-10 shadow-2xl relative">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white shadow-inner">
+                            <i data-lucide="user-plus" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Sua Lista VIP</h3>
+                        <p class="text-sm text-gray-400 mt-2">Adicione nomes e envie agora.</p>
+                    </div>
+
+                    <div class="space-y-4 mb-6">
+                        <div class="relative">
+                            <i data-lucide="calendar" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5"></i>
+                            <input 
+                                type="date" 
+                                id="vip-date"
+                                class="w-full bg-neutral-800 border border-neutral-700 text-white pl-12 pr-4 py-3 rounded-xl focus:outline-none focus:border-amber-500 transition-colors"
+                            />
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <input 
+                                type="text" 
+                                id="vip-name-input"
+                                placeholder="Nome e Sobrenome..." 
+                                class="flex-1 bg-neutral-800 border border-neutral-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-amber-500 transition-colors"
+                            />
+                            <button onclick="addVipName()" class="bg-amber-500 hover:bg-amber-400 text-black p-3 rounded-xl transition-colors">
+                                <i data-lucide="user-plus" class="w-6 h-6"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="vip-list-container" class="bg-neutral-950 rounded-xl p-4 h-48 overflow-y-auto mb-6 border border-neutral-800 custom-scrollbar">
+                        <!-- List injected via JS -->
+                        <div class="h-full flex flex-col items-center justify-center text-gray-600 italic">
+                            <i data-lucide="info" class="mb-2 opacity-50 w-6 h-6"></i>
+                            Lista vazia...
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-6 text-sm text-gray-500">
+                        <span id="vip-count">0 nomes na lista</span>
+                    </div>
+
+                    <button onclick="sendVipList()" class="w-full py-4 bg-transparent border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-all">
+                        <i data-lucide="send" class="w-5 h-5"></i> ENVIAR LISTA AGORA
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- --- FOOTER --- -->
+    <footer id="contato" class="bg-black border-t border-neutral-800 pt-16 pb-8 mb-20 md:mb-0">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-full border border-amber-500 flex items-center justify-center bg-black">
+                        <span class="text-amber-500 font-bold">SB</span>
+                    </div>
+                    <h4 class="text-xl font-bold font-serif">ESTAÇÃO SÃO BENTO</h4>
+                </div>
+                <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                    Desde 2006 trazendo alegria e diversão para as noites de Campinas. 
+                    Música boa, gente bonita e drinks de qualidade.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center text-gray-400 hover:text-amber-500 hover:bg-neutral-800 transition-all"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center text-gray-400 hover:text-amber-500 hover:bg-neutral-800 transition-all"><i data-lucide="map" class="w-5 h-5"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center text-gray-400 hover:text-amber-500 hover:bg-neutral-800 transition-all"><i data-lucide="phone" class="w-5 h-5"></i></a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-bold mb-6 border-l-4 border-amber-500 pl-3">CONTATO</h4>
+                <ul class="space-y-4 text-gray-400 text-sm">
+                    <li class="flex items-start gap-3">
+                        <i data-lucide="map-pin" class="text-amber-500 mt-1 w-4 h-4"></i>
+                        <span>Rua do Taquaral, 1234<br/>Taquaral, Campinas - SP</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="phone" class="text-amber-500 w-4 h-4"></i>
+                        <span>(19) 99999-9999</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="instagram" class="text-amber-500 w-4 h-4"></i>
+                        <span>@estacaosaobento</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-6 border-l-4 border-amber-500 pl-3">MAPA</h4>
+                <div class="w-full h-40 bg-neutral-800 rounded-lg overflow-hidden grayscale hover:grayscale-0 transition-all duration-500 opacity-70 hover:opacity-100">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3675.3576206680373!2d-47.0655186!3d-22.8726884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8c5c7d0d0d0d0%3A0x0!2sCampinas!5e0!3m2!1spt-BR!2sbr!4v1600000000000!5m2!1spt-BR!2sbr" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-neutral-900 pt-8 text-center">
+            <p class="text-neutral-600 text-xs">
+                © 2025 Estação São Bento. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/5519999999999" target="_blank" class="fixed bottom-36 md:bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform z-50 animate-bounce-slow">
+        <i data-lucide="phone" class="w-7 h-7 fill-current"></i>
+    </a>
+
+    <!-- --- JAVASCRIPT --- -->
+    <script>
+        // --- DADOS ---
+        const menuData = {
+            combos: [
+                { name: "Combo Red Label", desc: "1 Garrafa + 4 Energéticos (250ml)", price: "R$ 345,00" },
+                { name: "Combo Absolut", desc: "1 Garrafa + 4 Energéticos (250ml)", price: "R$ 345,00" },
+                { name: "Combo Tanqueray", desc: "1 Garrafa + 4 Tônicas/Energéticos", price: "R$ 379,00" },
+                { name: "Combo Jack Daniel's", desc: "1 Garrafa + 4 Energéticos", price: "R$ 439,00" },
+                { name: "Combo Black Label", desc: "1 Garrafa + 4 Energéticos", price: "R$ 449,00" },
+                { name: "Combo Ciroc", desc: "1 Garrafa + 4 Energéticos", price: "R$ 389,00" },
+                { name: "Combo Gin Beefeater", desc: "1 Garrafa + 4 Tônicas", price: "R$ 369,00" }
+            ],
+            bebidas: [
+                { name: "Heineken 600ml", desc: "Estupidamente gelada", price: "R$ 19,90" },
+                { name: "Império / Original 600ml", desc: "Gelada", price: "R$ 16,50 - 18,90" },
+                { name: "Chopp Claro", desc: "Caneca 300ml / 500ml", price: "R$ 9,90 / 13,90" },
+                { name: "Chopp Escuro/Vinho", desc: "Caneca 300ml", price: "R$ 10,90 / 15,90" },
+                { name: "Água / Refrigerante", desc: "Lata ou garrafa", price: "R$ 5,90 / 9,90" },
+                { name: "Red Bull", desc: "Sabores variados 250ml", price: "R$ 20,90" }
+            ],
+            porcoes: [
+                { name: "Batata Frita c/ Cheddar", desc: "Com bacon crocante (500gr)", price: "R$ 37,90" },
+                { name: "Isca de Frango", desc: "Empanado especial com molho (500gr)", price: "R$ 59,90" },
+                { name: "Filé Mignon Gorgonzola", desc: "Cubos de mignon ao molho (420gr)", price: "R$ 81,90" },
+                { name: "Costelinha BBQ", desc: "Com fritas (400gr)", price: "R$ 52,90" },
+                { name: "Bolinho Carne Seca", desc: "12 unidades", price: "R$ 47,90" },
+                { name: "Tábua de Frios", desc: "Salaminho, Provolone, Azeitona", price: "R$ 69,90" }
+            ],
+            drinks: [
+                { name: "Gin Tropical", desc: "Gin, Energético Tropical, Laranja (400ml)", price: "R$ 41,90" },
+                { name: "Moscow Mule", desc: "Vodka, Limão, Espuma de Gengibre", price: "R$ 39,90" },
+                { name: "Caipirinha", desc: "Frutas da época (80g fruta + 60ml)", price: "R$ 23,90" },
+                { name: "Aperol Spritz", desc: "Aperol, Espumante, Água com gás", price: "R$ 41,90" },
+                { name: "Jack & Coke", desc: "Whisky, Coca-cola, Gelo", price: "R$ 38,90" },
+                { name: "Cabaré Fire", desc: "Dose", price: "R$ 18,90" }
+            ],
+            lanches: [
+                { name: "Lanche de Churrasco", desc: "Mignon, queijo, vinagrete no pão francês", price: "R$ 43,90" },
+                { name: "Lanche de Pernil", desc: "Pernil desfiado, queijo, molho especial", price: "R$ 31,90" },
+                { name: "Frango Especial", desc: "Frango, bacon, queijo, salada", price: "R$ 36,90" },
+                { name: "Calabresa Acebolada", desc: "No pão francês com queijo", price: "R$ 31,90" }
+            ]
+        };
+
+        const galleryImages = [
+            "https://images.unsplash.com/photo-1574391884720-385075a852d5?q=80&w=1000",
+            "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=1000",
+            "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?q=80&w=1000",
+            "https://images.unsplash.com/photo-1596701062351-8c2c14d1fdd0?q=80&w=1000",
+            "https://images.unsplash.com/photo-1598387993441-a364f854c3e1?q=80&w=1000",
+            "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=1000"
+        ];
+
+        // --- INICIALIZAÇÃO ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderMenu('combos');
+            renderGallery();
+            renderPerks();
+        });
+
+        // --- NAVBAR SCROLL & MOBILE MENU ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-neutral-900/95', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-amber-500/20');
+                navbar.classList.remove('bg-transparent');
+            } else {
+                navbar.classList.remove('bg-neutral-900/95', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-amber-500/20');
+                navbar.classList.add('bg-transparent');
+            }
+        });
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenu.classList.contains('hidden') ? 'menu' : 'x';
+            mobileMenuBtn.innerHTML = `<i data-lucide="${icon}" class="w-7 h-7"></i>`;
+            lucide.createIcons();
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.innerHTML = `<i data-lucide="menu" class="w-7 h-7"></i>`;
+                lucide.createIcons();
+            });
+        });
+
+        // --- MENU LOGIC ---
+        const menuButtons = document.querySelectorAll('.menu-btn');
+        const menuContainer = document.getElementById('menu-items-container');
+
+        menuButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active style
+                menuButtons.forEach(b => {
+                    b.classList.remove('bg-amber-500', 'text-black', 'shadow-lg', 'shadow-amber-500/20', 'scale-105');
+                    b.classList.add('bg-neutral-900', 'border', 'border-neutral-800', 'text-gray-400', 'hover:border-amber-500', 'hover:text-amber-500');
+                });
+                btn.classList.remove('bg-neutral-900', 'border', 'border-neutral-800', 'text-gray-400', 'hover:border-amber-500', 'hover:text-amber-500');
+                btn.classList.add('bg-amber-500', 'text-black', 'shadow-lg', 'shadow-amber-500/20', 'scale-105');
+
+                renderMenu(btn.dataset.category);
+            });
+        });
+
+        function renderMenu(category) {
+            menuContainer.innerHTML = '';
+            const items = menuData[category];
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'flex justify-between items-start border-b border-neutral-800 pb-4 group hover:bg-neutral-800/50 p-2 rounded transition-all cursor-default';
+                div.innerHTML = `
+                    <div>
+                        <h4 class="text-lg font-bold text-white group-hover:text-amber-500 transition-colors">${item.name}</h4>
+                        <p class="text-sm text-gray-500 italic mt-1 max-w-[250px]">${item.desc}</p>
+                    </div>
+                    <span class="text-amber-500 font-bold whitespace-nowrap ml-4 bg-neutral-950 px-3 py-1 rounded border border-neutral-800 group-hover:border-amber-500/50">${item.price}</span>
+                `;
+                menuContainer.appendChild(div);
+            });
+        }
+
+        // --- GALLERY LOGIC ---
+        let currentSlide = 0;
+        const galleryContainer = document.getElementById('gallery-container');
+        const prevBtn = document.getElementById('prev-slide');
+        const nextBtn = document.getElementById('next-slide');
+
+        function renderGallery() {
+            galleryContainer.innerHTML = '';
+            galleryImages.forEach((img, index) => {
+                const div = document.createElement('div');
+                const isCurrent = index === currentSlide;
+                div.className = `absolute inset-0 gallery-slide ${isCurrent ? 'gallery-active' : 'gallery-hidden'}`;
+                div.innerHTML = `
+                    <img src="${img}" alt="Galeria ${index}" class="w-full h-full object-cover" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-10 left-10">
+                        <span class="bg-amber-500 text-black font-bold text-xs px-2 py-1 rounded mb-2 inline-block"><i data-lucide="camera" class="inline mr-1 w-3 h-3"></i> FOTOS RECENTES</span>
+                        <h4 class="text-white text-3xl font-bold">Noite Inesquecível #${index + 1}</h4>
+                        <p class="text-gray-300">Sábado • Baile da Estação</p>
+                    </div>
+                `;
+                galleryContainer.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + galleryImages.length) % galleryImages.length;
+            renderGallery();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % galleryImages.length;
+            renderGallery();
+        });
+
+        // --- VIP & NIVER LOGIC ---
+        const guestSlider = document.getElementById('guest-slider');
+        const guestCountDisplay = document.getElementById('guest-count-display');
+        const perksContainer = document.getElementById('perks-container');
+        const vipNameInput = document.getElementById('vip-name-input');
+        const vipDateInput = document.getElementById('vip-date');
+        const vipListContainer = document.getElementById('vip-list-container');
+        const vipCount = document.getElementById('vip-count');
+        let vipList = [];
+
+        guestSlider.addEventListener('input', (e) => {
+            guestCountDisplay.textContent = e.target.value;
+            renderPerks();
+        });
+
+        function renderPerks() {
+            const count = parseInt(guestSlider.value);
+            const perks = [
+                { min: 1, text: "Aniversariante VIP" },
+                { min: 5, text: "Acompanhante VIP" },
+                { min: 10, text: "Balde de Cerveja (5 un)" },
+                { min: 20, text: "Garrafa de Vodka Smirnoff" },
+                { min: 30, text: "Mesa no Camarote" }
+            ];
+
+            perksContainer.innerHTML = '';
+            perks.forEach(perk => {
+                const active = count >= perk.min;
+                const div = document.createElement('div');
+                div.className = `flex items-center gap-3 text-sm transition-all duration-300 ${active ? 'text-white opacity-100 translate-x-2' : 'text-gray-600 opacity-40 grayscale'}`;
+                const icon = active ? 'check' : 'lock';
+                const bg = active ? 'bg-green-500 text-black' : 'bg-neutral-700';
+                
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${bg}">
+                        <i data-lucide="${icon}" class="w-3 h-3"></i>
+                    </div>
+                    <span>${perk.text}</span>
+                `;
+                perksContainer.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        function addVipName() {
+            const name = vipNameInput.value.trim();
+            if (name) {
+                vipList.push(name);
+                vipNameInput.value = '';
+                renderVipList();
+            }
+        }
+
+        vipNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addVipName();
+        });
+
+        function removeVipName(index) {
+            vipList.splice(index, 1);
+            renderVipList();
+        }
+
+        function renderVipList() {
+            vipListContainer.innerHTML = '';
+            if (vipList.length === 0) {
+                vipListContainer.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-gray-600 italic">
+                        <i data-lucide="info" class="mb-2 opacity-50 w-6 h-6"></i>
+                        Lista vazia...
+                    </div>
+                `;
+            } else {
+                const ul = document.createElement('ul');
+                ul.className = 'space-y-2';
+                vipList.forEach((name, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center text-gray-300 text-sm bg-neutral-900 px-3 py-2 rounded-lg border border-neutral-800';
+                    li.innerHTML = `
+                        ${name}
+                        <button onclick="removeVipName(${index})" class="text-red-500 hover:text-red-400"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    `;
+                    ul.appendChild(li);
+                });
+                vipListContainer.appendChild(ul);
+            }
+            vipCount.textContent = `${vipList.length} nomes na lista`;
+            lucide.createIcons();
+        }
+
+        function sendVipList() {
+            const date = vipDateInput.value;
+            if (vipList.length === 0 || !date) {
+                alert("Por favor, selecione uma data e adicione nomes.");
+                return;
+            }
+            let msg = `*LISTA VIP - ESTAÇÃO SÃO BENTO*\nData: ${date}\n\n`;
+            vipList.forEach(name => msg += `- ${name}\n`);
+            window.open(`https://wa.me/5519999999999?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function sendBirthday() {
+            const count = guestSlider.value;
+            const msg = `Olá! Gostaria de reservar meu aniversário para aprox. ${count} convidados na Estação São Bento.`;
+            window.open(`https://wa.me/5519999999999?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+    </script>
+</body>
+</html>
